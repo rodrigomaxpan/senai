@@ -4,8 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,15 +14,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        EditText editTextTexto = findViewById(R.id.et_texto);
-        Button btn_mostrar = findViewById(R.id.btn_mostrar);
-
-        btn_mostrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
+
+    public void onClickBtnMostrar(View v){
+        EditText editText1 = findViewById(R.id.et_texto1);
+        EditText editText2 = findViewById(R.id.et_texto2);
+        String auxText = editText1.getText().toString() + " - " + editText2.getText().toString();
+        Toast.makeText(MainActivity.this, auxText, Toast.LENGTH_SHORT).show();
+    }
+
+    public void onClickBtnLimpar(View v){
+        EditText editText1 = findViewById(R.id.et_texto1);
+        EditText editText2 = findViewById(R.id.et_texto2);
+        editText1.setText("");
+        editText2.setText("");
+
+    }
+
 }
