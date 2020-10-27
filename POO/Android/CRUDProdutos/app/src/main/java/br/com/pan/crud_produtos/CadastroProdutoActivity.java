@@ -7,17 +7,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import br.com.pan.crud_produtos.R;
+import br.com.pan.crud_produtos.database.ProdutoDAO;
 import br.com.pan.crud_produtos.modelo.Produto;
 
 public class CadastroProdutoActivity extends AppCompatActivity {
 
-    private final int RESULT_CODE_NOVO_PRODUTO = 10;
-    private final int RESULT_CODE_PRODUTO_EDITADO = 11;
-    private final int RESULT_CODE_PRODUTO_DELETE = 12;
-    private boolean edicao = false;
-    private String auxId;
+
+    private int id = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +37,7 @@ public class CadastroProdutoActivity extends AppCompatActivity {
             EditText editTextValor = findViewById(R.id.editText_valor);
             editTextNome.setText(produto.getNome());
             editTextValor.setText(String.valueOf(produto.getValor()));
-            edicao = true;
-            auxId = produto.getId();
+            id = produto.getId();
             deleteButton.setVisibility(View.VISIBLE);
 
         }
@@ -56,17 +54,14 @@ public class CadastroProdutoActivity extends AppCompatActivity {
         String nome = editTextNome.getText().toString();
         float valor = Float.parseFloat(editTextvalor.getText().toString());
 
-
+        Produto produto = new Produto(id, nome, valor);
         Intent intent = new Intent();
-
-        if (edicao){
-            Produto produto = new Produto(auxId, nome, valor);
-            intent.putExtra( "produtoEditado", produto);
-            setResult(RESULT_CODE_PRODUTO_EDITADO,intent);
-        }else{
-            Produto produto = new Produto(nome,valor);
-            intent.putExtra( "novoProduto", produto);
-            setResult(RESULT_CODE_NOVO_PRODUTO,intent);
+        ProdutoDAO produtoDAO = new ProdutoDAO(getBaseContext());
+        boolean salvou = produtoDAO.salvarProduto(produto);
+        if (salvou){
+            finish();
+        }else {
+                Toast.makeText(CadastroProdutoActivity.this, "Erro ao salvar no banco de dados!", Toast.LENGTH_LONG).show();
         }
 
         finish();
@@ -74,11 +69,14 @@ public class CadastroProdutoActivity extends AppCompatActivity {
 
     public void onClickExcluir(View v){
 
-        Produto produto = new Produto(auxId, "null", 0);
-        Intent intent = new Intent();
-        intent.putExtra( "produtoDeletado", produto);
-        setResult(RESULT_CODE_PRODUTO_DELETE,intent);
-        finish();
+        ProdutoDAO produtoDAO = new ProdutoDAO(getBaseContext());
+
+        boolean deletou =  produtoDAO.deletarProduto(id);
+        if (deletou){
+            finish();
+        }else {
+            Toast.makeText(CadastroProdutoActivity.this, "Erro ao salvar no banco de dados!", Toast.LENGTH_LONG).show();
+        }
 
     }
 }

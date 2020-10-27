@@ -6,23 +6,22 @@ import java.util.UUID;
 public class Produto implements Serializable {
 
 
-    private String id;
+    private int id;
     private String nome;
     private float valor;
 
     public Produto(String nome, float valor) {
-        this.id = UUID.randomUUID().toString();
         this.nome = nome;
         this.valor = valor;
     }
 
-    public Produto(String id, String nome, float valor) {
+    public Produto(int id, String nome, float valor) {
         this.id = id;
         this.nome = nome;
         this.valor = valor;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -44,6 +43,6 @@ public class Produto implements Serializable {
 
     @Override
     public String toString() {
-        return nome + " - " + valor;
+        return id + " - " + nome + " - " + valor;
     }
 }
