@@ -10,20 +10,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import br.com.pan.crud_eventos.R;
+import br.com.pan.crud_eventos.database.EventoDAO;
+import br.com.pan.crud_eventos.database.entity.EventoEntity;
 import br.com.pan.crud_eventos.modelo.Evento;
 
 public class CadastroEventoActivity extends AppCompatActivity {
 
-    private final int RESULT_CODE_NOVO_EVENTO = 10;
-    private final int RESULT_CODE_EVENTO_EDITADO = 11;
-    private final int RESULT_CODE_EVENTO_DELETE = 12;
-    private boolean edicao = false;
-    private String auxId;
+    private int id = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +45,7 @@ public class CadastroEventoActivity extends AppCompatActivity {
             editTextNome.setText(evento.getNome());
             editTextLocal.setText(evento.getLocal());
             editTextDataHora.setText(evento.getDataHora());
-            edicao = true;
-            auxId = evento.getId();
+            id = evento.getId();
             deleteButton.setVisibility(View.VISIBLE);
 
         }
@@ -66,17 +64,17 @@ public class CadastroEventoActivity extends AppCompatActivity {
         String local = editTextLocal.getText().toString();
         String data = editTextDataHora.getText().toString();
 
-
         Intent intent = new Intent();
 
-        if (edicao){
-            Evento evento = new Evento(auxId, nome, local, data);
-            intent.putExtra( "eventoEditado", evento);
-            setResult(RESULT_CODE_EVENTO_EDITADO,intent);
-        }else{
-            Evento evento = new Evento(nome,local, data);
-            intent.putExtra( "novoEvento", evento);
-            setResult(RESULT_CODE_NOVO_EVENTO,intent);
+        Evento evento = new Evento(id, nome, local, data);
+
+        EventoDAO eventoDAO = new EventoDAO(getBaseContext());
+        boolean salvou = eventoDAO.salvarEvento(evento);
+
+        if (salvou){
+            finish();
+        }else {
+            Toast.makeText(CadastroEventoActivity.this, "Erro ao salvar no banco de dados!", Toast.LENGTH_LONG).show();
         }
 
         finish();
@@ -84,36 +82,14 @@ public class CadastroEventoActivity extends AppCompatActivity {
 
     public void onClickExcluir(View v){
 
+        EventoDAO eventoDao = new EventoDAO(getBaseContext());
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(CadastroEventoActivity.this);
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                Evento evento = new Evento(auxId, "null", "null", "null");
-                Intent intent = new Intent();
-                intent.putExtra( "eventoDeletado", evento);
-                setResult(RESULT_CODE_EVENTO_DELETE,intent);
-                finish();
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                finish();
-            }
-        });
-
-        builder.setMessage("Deseja realmente excluir esse evento?");
-        builder.setTitle("Confirmar Exclusão:");
-
-        AlertDialog d = builder.create();
-        d.show();
-
-
+        boolean deletou =  eventoDao.deletarProduto(id);
+        if (deletou){
+            finish();
+        }else {
+            Toast.makeText(CadastroEventoActivity.this, "Erro ao salvar no banco de dados!", Toast.LENGTH_LONG).show();
+        }
 
     }
 }
