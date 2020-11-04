@@ -43,7 +43,7 @@ public class CadastroEventoActivity extends AppCompatActivity {
             EditText editTextLocal = findViewById(R.id.editText_local);
             EditText editTextDataHora = findViewById(R.id.editText_data);
             editTextNome.setText(evento.getNome());
-            editTextLocal.setText(evento.getLocal());
+            editTextLocal.setText(evento.getLocal().getId());
             editTextDataHora.setText(evento.getDataHora());
             id = evento.getId();
             deleteButton.setVisibility(View.VISIBLE);
@@ -66,7 +66,7 @@ public class CadastroEventoActivity extends AppCompatActivity {
 
         Intent intent = new Intent();
 
-        Evento evento = new Evento(id, nome, local, data);
+        Evento evento = new Evento(id, nome, null, data);
 
         EventoDAO eventoDAO = new EventoDAO(getBaseContext());
         boolean salvou = eventoDAO.salvarEvento(evento);

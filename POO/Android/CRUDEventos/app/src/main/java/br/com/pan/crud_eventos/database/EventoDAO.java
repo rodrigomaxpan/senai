@@ -9,13 +9,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.pan.crud_eventos.database.entity.EventoEntity;
+import br.com.pan.crud_eventos.database.entity.LocalEntity;
 import br.com.pan.crud_eventos.modelo.Evento;
+import br.com.pan.crud_eventos.modelo.Local;
 
 
 public class EventoDAO {
 
     private DBGateway dbGateway;
-    private final String SQL_LISTAR_TODOS = "SELECT * FROM " + EventoEntity.TABLE_NAME;
+    private final String SQL_LISTAR_TODOS = "SELECT " +
+            EventoEntity.TABLE_NAME + "." + EventoEntity._ID + ", " +
+            EventoEntity.TABLE_NAME + "." + EventoEntity.COLUMN_NAME_ID_LOCAL + ", " +
+            EventoEntity.TABLE_NAME + "." + EventoEntity.COLUMN_NAME_NOME + ", " +
+            EventoEntity.TABLE_NAME + "." + EventoEntity.COLUMN_NAME_DATA + ", " +
+            LocalEntity.TABLE_NAME + "." + LocalEntity.COLUMN_NAME_NOME+ ", " +
+            LocalEntity.TABLE_NAME + "." + LocalEntity.COLUMN_NAME_BAIRRO+ ", " +
+            LocalEntity.TABLE_NAME + "." + LocalEntity.COLUMN_NAME_CIDADE+ ", " +
+            LocalEntity.TABLE_NAME + "." + LocalEntity.COLUMN_NAME_CAPACIDADE+ " FROM " +
+            EventoEntity.TABLE_NAME +
+
+            " INNER JOIN " + LocalEntity.TABLE_NAME + " ON " + EventoEntity.COLUMN_NAME_ID_LOCAL +
+            " = " + LocalEntity.TABLE_NAME + "." + LocalEntity._ID;
 
 
     public EventoDAO(Context context){
@@ -25,7 +39,7 @@ public class EventoDAO {
     public boolean salvarEvento(Evento evento){
         ContentValues contentValues = new ContentValues();
         contentValues.put(EventoEntity.COLUMN_NAME_NOME, evento.getNome());
-        contentValues.put(EventoEntity.COLUMN_NAME_LOCAL,evento.getLocal());
+        contentValues.put(EventoEntity.COLUMN_NAME_ID_LOCAL,evento.getLocal().getId());
         contentValues.put(EventoEntity.COLUMN_NAME_DATA,evento.getDataHora());
         if (evento.getId() > 0){
             return dbGateway.getDb().update(
@@ -43,10 +57,15 @@ public class EventoDAO {
         Cursor cursor = dbGateway.getDb().rawQuery(SQL_LISTAR_TODOS, null   );
         while (cursor.moveToNext()){
             int id  = cursor.getInt(cursor.getColumnIndex(EventoEntity._ID));
-            String nome = cursor.getString(cursor.getColumnIndex(EventoEntity.COLUMN_NAME_NOME));
-            String local = cursor.getString((cursor.getColumnIndex(EventoEntity.COLUMN_NAME_LOCAL)));
+            int idLocal = cursor.getInt((cursor.getColumnIndex(EventoEntity.COLUMN_NAME_ID_LOCAL)));
+            String nomeEvento = cursor.getString(cursor.getColumnIndex(EventoEntity.COLUMN_NAME_NOME));
             String dataHora = cursor.getString((cursor.getColumnIndex(EventoEntity.COLUMN_NAME_DATA)));
-            eventos.add(new Evento(id, nome, local, dataHora));
+            String nomeLocal = cursor.getString((cursor.getColumnIndex(LocalEntity.COLUMN_NAME_NOME)));
+            String bairro = cursor.getString((cursor.getColumnIndex(LocalEntity.COLUMN_NAME_BAIRRO)));
+            String cidade = cursor.getString((cursor.getColumnIndex(LocalEntity.COLUMN_NAME_CIDADE)));
+            int capacidade = cursor.getInt((cursor.getColumnIndex(LocalEntity.COLUMN_NAME_CAPACIDADE)));
+            Local local = new Local(idLocal,nomeLocal,bairro,cidade,capacidade);
+            eventos.add(new Evento(id, nomeEvento, local, dataHora));
         }
         cursor.close();
         return eventos;
