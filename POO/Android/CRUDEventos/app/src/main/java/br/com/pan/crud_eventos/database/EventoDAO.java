@@ -17,7 +17,7 @@ import br.com.pan.crud_eventos.modelo.Local;
 public class EventoDAO {
 
     private DBGateway dbGateway;
-    private final String SQL_LISTAR_TODOS = "SELECT " +
+    private String SQL_LISTAR_TODOS = "SELECT " +
             EventoEntity.TABLE_NAME + "." + EventoEntity._ID + ", " +
             EventoEntity.TABLE_NAME + "." + EventoEntity.COLUMN_NAME_ID_LOCAL + ", " +
             EventoEntity.TABLE_NAME + "." + EventoEntity.COLUMN_NAME_NOME + ", " +
@@ -52,8 +52,12 @@ public class EventoDAO {
 
     }
 
-    public List<Evento> listar(){
+    public List<Evento> listar(String filtro, String orderBy, String sort){
         List<Evento> eventos = new ArrayList<>();
+
+        SQL_LISTAR_TODOS += " where " + EventoEntity.COLUMN_NAME_NOME + " like '%" + filtro + "%'";
+        SQL_LISTAR_TODOS += " or " + LocalEntity.COLUMN_NAME_CIDADE + " like '%" + filtro + "%'";
+        SQL_LISTAR_TODOS += " ORDER BY " + orderBy + sort;
         Cursor cursor = dbGateway.getDb().rawQuery(SQL_LISTAR_TODOS, null   );
         while (cursor.moveToNext()){
             int id  = cursor.getInt(cursor.getColumnIndex(EventoEntity._ID));
@@ -70,6 +74,7 @@ public class EventoDAO {
         cursor.close();
         return eventos;
     }
+
 
     public boolean deletarEvento(int id){
         return dbGateway.getDb().delete(EventoEntity.TABLE_NAME, br.com.pan.crud_eventos.database.entity.EventoEntity._ID + " = ?",

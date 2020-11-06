@@ -21,6 +21,7 @@ import br.com.pan.crud_eventos.R;
 import br.com.pan.crud_eventos.database.EventoDAO;
 import br.com.pan.crud_eventos.database.LocalDAO;
 import br.com.pan.crud_eventos.database.entity.EventoEntity;
+import br.com.pan.crud_eventos.database.entity.LocalEntity;
 import br.com.pan.crud_eventos.modelo.Evento;
 import br.com.pan.crud_eventos.modelo.Local;
 
@@ -32,6 +33,8 @@ public class CadastroEventoActivity extends AppCompatActivity {
     private ArrayAdapter<Local> adapterLocais;
     private EditText editTextNome;
     private EditText editTextDataHora;
+    private final String sortASC = " ASC";
+    private final String sortDESC = " DESC";
 
 
     @Override
@@ -49,7 +52,7 @@ public class CadastroEventoActivity extends AppCompatActivity {
     private void carregarLocais(){
         LocalDAO localDAO = new LocalDAO(getBaseContext());
         adapterLocais = new ArrayAdapter<>(CadastroEventoActivity.this,
-                android.R.layout.simple_spinner_item, localDAO.listar());
+                android.R.layout.simple_list_item_1, localDAO.listar(LocalEntity.COLUMN_NAME_NOME, sortASC));
         spinnerLocais.setAdapter(adapterLocais);
     }
 

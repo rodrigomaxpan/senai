@@ -14,7 +14,7 @@ import br.com.pan.crud_eventos.modelo.Local;
 public class LocalDAO {
 
     private DBGateway dbGateway;
-    private final String SQL_LISTAR_TODOS = "SELECT * FROM " + LocalEntity.TABLE_NAME;
+    private String SQL_LISTAR_TODOS = "SELECT * FROM " + LocalEntity.TABLE_NAME;
 
     public LocalDAO(Context context){
         dbGateway = DBGateway.getInstance(context);
@@ -38,9 +38,11 @@ public class LocalDAO {
 
     }
 
-    public List<Local> listar(){
+    public List<Local> listar(String orderBy, String sort){
         List<Local> locais = new ArrayList<>();
-        Cursor cursor = dbGateway.getDb().rawQuery(SQL_LISTAR_TODOS, null   );
+        SQL_LISTAR_TODOS += " ORDER BY " + orderBy + sort;
+
+        Cursor cursor = dbGateway.getDb().rawQuery(SQL_LISTAR_TODOS,null  );
         while (cursor.moveToNext()){
             int id  = cursor.getInt(cursor.getColumnIndex(LocalEntity._ID));
             String nome = cursor.getString(cursor.getColumnIndex(LocalEntity.COLUMN_NAME_NOME));

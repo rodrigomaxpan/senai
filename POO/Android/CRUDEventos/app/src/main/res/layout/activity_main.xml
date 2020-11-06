@@ -7,10 +7,46 @@
     android:orientation="vertical"
     tools:context="br.com.pan.crud_eventos.MainActivity" >
 
-    <ListView
-        android:id="@+id/listview_eventos"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="400dp" />
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editText_find"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Pesquisar evento ..."
+            android:inputType="textPersonName" />
+
+        <ImageButton
+            android:id="@+id/btnASC"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClickListarEventosASC"
+            app:srcCompat="@android:drawable/arrow_down_float" />
+
+        <ImageButton
+            android:id="@+id/btnDESC"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClickListarEventosDESC"
+            app:srcCompat="@android:drawable/arrow_up_float" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/listview_eventos"
+            android:layout_width="match_parent"
+            android:layout_height="350dp" />
 
     <Button
         android:id="@+id/btn_novoEvento"
@@ -25,4 +61,5 @@
         android:layout_height="wrap_content"
         android:onClick="onClickListarLocais"
         android:text="Listar Locais" />
+    </LinearLayout>
 </LinearLayout>

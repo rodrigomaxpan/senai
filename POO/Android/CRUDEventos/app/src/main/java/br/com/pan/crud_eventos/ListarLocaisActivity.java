@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import br.com.pan.crud_eventos.database.LocalDAO;
+import br.com.pan.crud_eventos.database.entity.LocalEntity;
 import br.com.pan.crud_eventos.modelo.Local;
 
 public class ListarLocaisActivity extends AppCompatActivity {
@@ -17,6 +18,8 @@ public class ListarLocaisActivity extends AppCompatActivity {
 
     private ListView listviewLocais;
     private ArrayAdapter<Local> adapterLocais;
+    private final String sortASC = " ASC";
+    private final String sortDESC = " DESC";
 
 
     @Override
@@ -33,7 +36,7 @@ public class ListarLocaisActivity extends AppCompatActivity {
         super.onResume();
         LocalDAO localDAO = new LocalDAO(getBaseContext());
         adapterLocais = new ArrayAdapter<Local>(ListarLocaisActivity.this,
-                android.R.layout.simple_list_item_1, localDAO.listar());
+                android.R.layout.simple_list_item_1, localDAO.listar(LocalEntity.COLUMN_NAME_CIDADE, sortASC));
         listviewLocais.setAdapter(adapterLocais);
     }
 
@@ -46,6 +49,21 @@ public class ListarLocaisActivity extends AppCompatActivity {
         Intent intent = new Intent(ListarLocaisActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void onClickListarLocaisASC(View v){
+        LocalDAO localDAO = new LocalDAO(getBaseContext());
+        adapterLocais = new ArrayAdapter<Local>(ListarLocaisActivity.this,
+                android.R.layout.simple_list_item_1, localDAO.listar(LocalEntity.COLUMN_NAME_CIDADE, sortASC));
+        listviewLocais.setAdapter(adapterLocais);
+    }
+
+    public void onClickListarLocaisDESC(View v){
+
+        LocalDAO localDAO = new LocalDAO(getBaseContext());
+        adapterLocais = new ArrayAdapter<Local>(ListarLocaisActivity.this,
+                android.R.layout.simple_list_item_1, localDAO.listar(LocalEntity.COLUMN_NAME_CIDADE, sortDESC));
+        listviewLocais.setAdapter(adapterLocais);
     }
 
     private void definirOnClickListenerListView(){
