@@ -12,7 +12,7 @@ import br.com.pan.crud_eventos.database.contract.LocalContract;
 public class DatabaseDBHelper extends SQLiteOpenHelper {
 
     private static final String  DATABASE_NAME = "db.eventos";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
 
     public DatabaseDBHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

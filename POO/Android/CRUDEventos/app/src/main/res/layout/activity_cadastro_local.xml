@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="br.com.pan.crud_eventos.CadastroEventoActivity">
+    tools:context="br.com.pan.crud_eventos.CadastroLocalActivity">
 
     <TextView
         android:id="@+id/textView_nome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nome do evento:" />
+        android:text="Nome do local:" />
 
     <EditText
         android:id="@+id/editText_nome"
@@ -20,29 +20,48 @@
         android:ems="10"
         android:inputType="textPersonName" />
 
-    <TextView
-        android:id="@+id/textView_valor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Local do evento:" />
-
-    <Spinner
-        android:id="@+id/spinner_locais"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/textView_data"
+        android:id="@+id/textView_cidade"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Data do Evento:" />
+        android:text="Cidade:" />
 
     <EditText
-        android:id="@+id/editText_data"
+        android:id="@+id/editText_cidade"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="date" />
+        android:inputType="textPersonName" />
+
+
+    <TextView
+        android:id="@+id/textView_bairro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bairro:" />
+
+    <EditText
+        android:id="@+id/editText_bairro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+
+    <TextView
+        android:id="@+id/textView_capacidade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Capacidade:" />
+
+    <EditText
+        android:id="@+id/editText_capacidade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number" />
+
 
     <LinearLayout
         android:layout_width="match_parent"

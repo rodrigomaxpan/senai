@@ -19,11 +19,6 @@ import br.com.pan.crud_eventos.modelo.Evento;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final int REQUEST_CODE_NOVO_EVENTO = 1;
-    private final int REQUEST_CODE_EDITAR_EVENTO = 2;
-    private final int RESULT_CODE_NOVO_EVENTO = 10;
-    private final int RESULT_CODE_EVENTO_EDITADO = 11;
-    private final int RESULT_CODE_EVENTO_DELETE = 12;
 
     private ListView listviewEventos;
     private ArrayAdapter<Evento> adapterEventos;
@@ -56,6 +51,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void onClickListarLocais(View v){
+        Intent intent = new Intent(MainActivity.this, ListarLocaisActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     private void definirOnClickListenerListView(){
         listviewEventos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -67,5 +68,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 }

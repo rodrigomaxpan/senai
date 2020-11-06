@@ -28,7 +28,7 @@ public class EventoDAO {
             LocalEntity.TABLE_NAME + "." + LocalEntity.COLUMN_NAME_CAPACIDADE+ " FROM " +
             EventoEntity.TABLE_NAME +
 
-            " INNER JOIN " + LocalEntity.TABLE_NAME + " ON " + EventoEntity.COLUMN_NAME_ID_LOCAL +
+            " INNER JOIN " + LocalEntity.TABLE_NAME + " ON " + EventoEntity.TABLE_NAME + "." + EventoEntity.COLUMN_NAME_ID_LOCAL +
             " = " + LocalEntity.TABLE_NAME + "." + LocalEntity._ID;
 
 
@@ -64,14 +64,14 @@ public class EventoDAO {
             String bairro = cursor.getString((cursor.getColumnIndex(LocalEntity.COLUMN_NAME_BAIRRO)));
             String cidade = cursor.getString((cursor.getColumnIndex(LocalEntity.COLUMN_NAME_CIDADE)));
             int capacidade = cursor.getInt((cursor.getColumnIndex(LocalEntity.COLUMN_NAME_CAPACIDADE)));
-            Local local = new Local(idLocal,nomeLocal,bairro,cidade,capacidade);
+            Local local = new Local(idLocal,nomeLocal,cidade, bairro, capacidade);
             eventos.add(new Evento(id, nomeEvento, local, dataHora));
         }
         cursor.close();
         return eventos;
     }
 
-    public boolean deletarProduto(int id){
+    public boolean deletarEvento(int id){
         return dbGateway.getDb().delete(EventoEntity.TABLE_NAME, br.com.pan.crud_eventos.database.entity.EventoEntity._ID + " = ?",
                 new String[] { String.valueOf(id)}) > 0;
     }
